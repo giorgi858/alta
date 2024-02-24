@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">About Us</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Welcome To Alta's about page</p>
+        </div>
+    </div>
+</header>
+<div class="container">
+  <div class="row">
+   <center>
+    <div class="col-8">
+     <br/><br/>
+     <p align="justify">alta.ge არის ყველაზე დიდი მსხვილი საყოფაცხოვრებო და ტექნიკის მაღაზია,
+         აქ შეიგიძლიათ შეიძინოთ ტელეფონები, დრონები და კიდევ ბევრი.<br/><br/>
+         თუ გაინეტესებთ ვრცელი ინფორმაცია ჩვენ შესახებ, გვეწვიეთ
+         <a href="https://www.facebook.com/alta.ge">facebook-ის ფეიჯზე.</a>
+         <br/><br/>
+         პროდუცქიის კატალოოგი კი იხიდეთ <a href="{% url 'home' %}">მთავარ საიტზე.</a>
+     </p>
+    </div>
+    <br/><br/><br/><br/>
+   </center>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

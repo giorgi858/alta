@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Categories</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Choose Your Category below...</p>
+        </div>
+    </div>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="col-12 border">
+        <br/>
+        <center><h2>There is all categories... </h2></center>
+    {% for category in categories %}
+        <div class=" col-8 offset-2">
+            <br/>
+            <a class="btn btn-outline-danger col-12  " href="{% url 'category' category %}">{{ category }}</a>
+        </div>
+        <br/>
+    {% endfor %}
+        <br/>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
