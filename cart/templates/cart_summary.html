@@ -80,10 +80,11 @@
 
 {% endfor %}
 <br/>
-<div class="container">
-<h1>Total : {{total}}</h1>
+<div align="right" style="max-width: 90%;">
+<h3>Total : {{total}}</h3>
+    <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
 </div>
-<hr/>
+<hr style="max-width: 90%;"/>
 
 
     {% else  %}

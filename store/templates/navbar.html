@@ -1,45 +1,68 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5 mainDivLogo">
-        <a class="navbar-brand mainALogo" href="{% url 'home' %}">
-            <img class="logo" src="{% static 'images/alta_logo.png' %}"/>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul style="font-size:19px" class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active text-success" aria-current="page" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link active text-success" href="{% url 'about' %}">About</a></li>
-     {% if user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+  <div class="container-fluid">
+      <a class="navbar-brand mainALogo" href="{% url 'home' %}">
+        <img class="logo" src="{% static 'images/alta_logo.png' %}"/>
+      </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul style="font-size:19px"  class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active text-success" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active text-success" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle active text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+              <li><a class="dropdown-item " href="{% url 'category_summary' %}">All Products</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li ><a class="dropdown-item" href="{% url 'category' 'Drones' %}">Drones</a></li>
+              <li><a class="dropdown-item" href="{% url 'category' 'Smartphones' %}">Smartphones</a></li>
+              <li><a class="dropdown-item" href="{% url 'category' 'TV!s' %}">TV's</a></li>
+          </ul>
+        </li>
+{% if user.is_authenticated %}
 
-      <li class="nav-item dropdown ">
-        <a class="nav-link active dropdown-toggle text-success" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
-        <ul  class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item " href="{% url 'update_user' %}">User Profile</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Info</a></li>
-        </ul>
-    </li>
+<li class="nav-item dropdown ">
+<a class="nav-link active dropdown-toggle text-success" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+<ul  class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item " href="{% url 'update_user' %}">User Profile</a></li>
+    <li><hr class="dropdown-divider" /></li>
+    <li><a class="dropdown-item" href="{% url 'update_info' %}">User Info</a></li>
+</ul>
+</li>
+
+        {% endif %}
+
+
+      </ul>
 
 
 
-    {% else %}
-                    <li class="nav-item"><a class="nav-link active text-success" href="{% url 'login' %}">login</a></li>
-                    <li class="nav-item"><a class="nav-link active text-success" href="{% url 'register' %}">register</a></li>
-                {% endif %}
-                <li class="nav-item dropdown ">
-                    <a class="nav-link active dropdown-toggle text-success" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li  ><a class="dropdown-item " href="{% url 'category_summary' %}">All Products</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li ><a class="dropdown-item" href="{% url 'category' 'Drones' %}">Drones</a></li>
-                        <li><a class="dropdown-item" href="{% url 'category' 'Smartphones' %}">Smartphones</a></li>
-                        <li><a class="dropdown-item" href="{% url 'category' 'TV!s' %}">TV's</a></li>
-                    </ul>
-                </li>
-                <li style="font-size:18px" class="nav-item"><a class="nav-link active text-success" aria-current="page" href="{% url 'search' %}">Search</a></li>
 
-            </ul>
-                 {% if user.is_authenticated %}
+
+
+
+
+
+
+
+
+
+
+      <form class="d-flex" role="search"  method="POST" action="{% url 'search' %}">
+             {% csrf_token %}
+
+        <input class="form-control me-2" type="search" placeholder="Search Everything" name="searched">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+                {% if user.is_authenticated %}
 
             <form class="d-flex">
             <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 row mx-md-n5">
@@ -53,7 +76,16 @@
                 </a>
             </form>
                 {% else %}
-             <form class="d-flex">
+
+             <form class="d-flex mt-1">
+                  <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 row mx-md-n5 ">
+                      <li style="font-size:18px" class="nav-item"><a class="nav-link active text-success "  href="{% url 'login' %}">login</a></li>
+                  </div>
+                      <div class="navbar-nav me-auto  mb-lg-0  row mx-md-n5">
+                          <li style="font-size:18px" class="nav-item"><a class="nav-link active text-success "  href="{% url 'register' %}">register</a></li>
+                      </div>
+
+
                 <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark ">
                        <i class="bi-cart-fill me-1"></i>
                     Cart
@@ -62,7 +94,6 @@
                 </a>
             </form>
             {% endif %}
-
-        </div>
     </div>
+  </div>
 </nav>

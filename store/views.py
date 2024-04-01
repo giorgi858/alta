@@ -3,8 +3,15 @@ from .models import Product, Category, Profile
 from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
+
 from django.contrib import messages
 from django.db.models import Q
+import json
+from cart.cart import Cart
+
 
 def home_view(request):
     products = Product.objects.all()
@@ -72,17 +79,27 @@ def update_user(request):
 
 def update_info(request):
     if request.user.is_authenticated:
+        # Get current user
         current_user = Profile.objects.get(user__id=request.user.id)
+        # Get Current users `shipping info
+        shipping_user = ShippingAddress.objects.get(shipping_user=request.user)
+        print('shipping_user', shipping_user)
+        # Get Users original user form
         form = UserInfoForm(request.POST or None, instance=current_user)
         print("current_user", current_user)
+        # Get user's shipping form
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+        print("shipping_form", shipping_form)
 
-        if form.is_valid():
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, 'Your Info Has Been Updated')
             return redirect('home')
         else:
             context = {
-                'form': form
+                'form': form,
+                'shipping_form': shipping_form,
             }
             return render(request, 'update_info.html', context)
 
@@ -118,6 +135,24 @@ def login_user(request):
         user = authenticate(request, username=login_username, password=login_password)
         if user is not None:
             login(request, user)
+
+            # Do some shopping cart stuff
+            current_user = Profile.objects.get(user__id=request.user.id)
+            # Get their saved cart from DB
+            saved_cart = current_user.old_cart
+            print('saved_cart', saved_cart)
+            # convert database string to python dictionary
+            if saved_cart:
+                # convert to dictionary using JSON
+                converted_cart = json.loads(saved_cart)
+                print('converted_cart', converted_cart)
+                # Add the loaded cart dictionary to our session
+                # First get the Cart
+                cart = Cart(request)
+                # Loop through the cax§rt and add the items from the database
+                for key, value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
+
             messages.success(request, ' Successfully Login, Congratulation')
             return redirect('home')
         else:

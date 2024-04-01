@@ -10,6 +10,7 @@ def cart_summary(request):
     cart = Cart(request)
     cart_products = cart.get_products
     quantities = cart.get_quantities()
+    print('cart_products f', cart_products)
     total = cart.cart_total()
     context = {
         'cart_products': cart_products,
